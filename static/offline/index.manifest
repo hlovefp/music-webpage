@@ -1,0 +1,9 @@
+CACHE MANIFEST    # 必须放在第一行
+#version 1        # 清单文件的版本号
+CACHE:            # 后跟需要缓存的资源
+index.html
+123.jpg
+NETWORK:          # 后跟不需要缓存的资源
+
+FALLBACK:         # 后跟两行，第一行在线状态使用的资源,无需缓存；第二行离线状态使用的资源，需要本地缓存
+test.js offline.js
