@@ -22,3 +22,30 @@ var server = http.createServer(function(request, response){
 });
 server.listen(8080);
 console.log('visit http://localhost:8080')
+
+// 在当前文件目录下下载ws模块 npm install ws
+// 启动 node WebSocketServer.js
+var WebSocketServer = require('ws').Server,
+
+wss = new WebSocketServer({ port: 8181 });
+
+wss.broadcast = function(ws,message){
+    wss.clients.forEach(client=>{
+        if(ws!=client){
+            client.send(message)
+        }
+    })
+}
+
+wss.on('connection', function (ws) {
+    console.log('client connected');
+    ws.on('message', function (message) {
+        console.log(message);   
+        wss.broadcast(ws,message);
+    });
+    ws.on('close',function(){
+        console.log('close');
+    });
+});
+
+console.log('websocket: ws://localhost:8181')

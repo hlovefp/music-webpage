@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>WebSocket</title>
+</head>
+<body>
+
+<div style="width:600px;height:240px;overflow-y:auto;border:1px solid black;" id="show"></div>
+<input type="text" size="80" id="msg" name="msg"/>
+<input type="button" value="发送" onclick="sendMessage()"/><br/>
+<input type="file" size="80" id="fx" accept="image/*"/>
+<input type="button" value="发送图片" onclick="sendBinFile()"/><br/>
+
+<script>
+
+var ws = new WebSocket("ws://localhost:8181");
+
+ws.onopen=function(){
+  // ws.send("发往服务器数据");
+}
+
+ws.onmessage=function(event){
+	var show = document.getElementById('show');
+	if( event.data instanceof Blob ){
+	   var img = document.createElement("img");
+	   img.src = window.URL.createObjectURL(event.data);
+	   show.appendChild(img);
+	   show.innerHTML += "<br/>";
+	}else{
+	  show.innerHTML += event.data + "<br/>";                     // 接收并显示消息
+	}
+}
+
+function sendMessage(){
+  var input = document.getElementById('msg');
+  ws.send(input.value);
+  input.value="";                                                // 清空输入框
+}
+
+function sendBinFile(){
+   var fileElement = document.querySelector("#fx");
+   var f = fileElement.files[0];   // 获取用户选择的文件
+   ws.send(f);         // 发送二进制数据
+   fileElement.value = "";
+}
+
+</script>
+
+</body>
+</html>
