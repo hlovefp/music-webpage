@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>runoob.com</title> 
+<style>
+</style>
+</head>
+<body>
+
+<audio id="player" controls autoplay hidden>浏览器不支持audio元素</audio>
+<input id="bn" type="button" onclick="playOrPause()" value="播放"/>
+<button onclick="nextOne()">下一首</button>
+<span id="detail"></span><br/>
+<select id="typeSel" style="width:160px;">
+	<option value="sequence">顺序播放</option>
+	<option value="random">随机播放</option>
+</select>
+<br/>
+<ul>
+</ul>
+<script type="text/javascript">
+	var musics = [
+		"窗外 - 谭维维.mp3",
+		"短发 - 张靓颖.mp3",
+		"爱情多恼河 - 林俊杰.mp3",
+		"G.E.M.邓紫棋-光年之外.mp3"];
+
+	var ul = document.getElementsByTagName("ul")[0];
+	for(var i=0; i<musics.length; i++){
+		var li = document.createElement("li");
+		li.innerHTML = musics[i];
+		ul.appendChild(li);
+	}
+
+	var index = 0;
+	var playType;
+	window.onload = function(){
+		var typeSel = document.getElementById("typeSel");
+		typeSel.onchange=function(){
+			window.playType = typeSel.value;
+		}
+        player.onended=nextOne;       // 播放完毕触发事件
+        player.ontimeupdate = function(){   // 播放过程中不断触发
+            console.log(player.currentTime+"/"+player.duration);
+        }
+        playFirstOne();
+	}
+    function playOrPause(){
+        var player = document.getElementById("player");
+        var bn = document.getElementById("bn");
+        if(player.paused){
+             player.play();
+             bn.value="暂停";
+        }else{
+             player.pause();
+             bn.value="播放";
+        }
+    }
+    function playFirstOne(){
+        var player = document.getElementById("player");
+        var span = document.getElementById("detail");
+        window.index=0;         // 页面加载时播放第一个
+        player.src=musics[window.index];             
+        span.innerHTML=musics[index];
+    }
+    function nextOne(){
+        var player = document.getElementById("player");
+        var span = document.getElementById("detail");
+        var bn = document.getElementById("bn");
+        if(playType=="random"){
+    		index = Math.floor(Math.random()*musics.length);
+    	}else{
+    		index = ++index % musics.length;
+            console.log(index);
+    	}
+    	player.src=musics[index];
+    	player.play();  // 播放
+        bn.value="暂停";
+    	span.innerHTML=musics[index];
+    }
+</script>
+
+</body>
+</html>
