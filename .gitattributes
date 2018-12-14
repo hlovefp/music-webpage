@@ -1,1 +1,4 @@
-*.js linguist-language=javascript
+#*.js linguist-language=javascript
+*.html linguist-vendored
+*.mp3 linguist-vendored
+
