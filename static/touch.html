@@ -64,11 +64,10 @@
         </li>
     </ul>
     <div class="icons" id="icons">
-        <span class="red">1</span>
+        <span>1</span>
         <span>2</span>
         <span>3</span>
         <span>4</span>
-        <span>5</span>
     </div>
 </div>
 
@@ -77,10 +76,17 @@
 
 
 var handlers = {
-    index: 0,              // 显示元素的索引
+    index: 3,              // 显示元素的索引
     slider: document.getElementById('slider'),
     icons: document.getElementById('icons'),
     icon: this.icons.getElementsByTagName('span'),
+    show: function(){
+    	var idx = this.index % this.icon.length;
+
+    	this.icon[ idx ].className='red';
+    	this.slider.className='content f-anim';
+    	this.slider.style.left=(-idx*600)+"px";
+    },
     // 三个触屏事件都使用该事件处理函数
     handlerEvent: function(event){
     	console.log(event.type);
@@ -123,22 +129,23 @@ var handlers = {
     end:function(event){
         var duration = +new Date() - startPos.time; // 滑动持续时间
         if(isScrolling===0){  // 横向滑动
-            // 取消索引的红色数字
-            this.icon[this.index].className='';
             // 滑动时间大于10ms才处理滑动事件
             if(Number(duration)>10){
+            	this.icon[this.index].className='';  // 取消原来索引的红色数字
+
+            	// 索引指向下一张图片
                 // 判断是左移还是右移，并偏移量大于10时执行
                 if(endPos.x>10)
                     if(this.index !== 0) this.index -= 1;
                 if(endPos.x<-10)
                     if(this.index!==this.icon.length-1) this.index += 1;
+
+                this.show();
             }
-            this.icon[this.index].className='red';
-            this.slider.className='content f-anim';
-            this.slider.style.left=(-this.index*600)+"px";
+            
         }
         this.slider.removeEventListener('touchmove',this,false);
-        this.slider.remvoeEventListener('touchend',this.false);
+        this.slider.remvoeEventListener('touchend',this,false);
     }
 }
 
@@ -147,6 +154,7 @@ if( ('ontouchstart' in window) || window.DocumentTouch && document instanceof Do
 	  // 系统自动那个调用handlers的handlerEvent属性作为事件监听函数
 	  var slider = document.getElementById('slider');
       slider.addEventListener('touchstart',handlers,false);
+      handlers.show();
 }
 
 
