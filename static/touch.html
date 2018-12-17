@@ -51,15 +51,15 @@
             <p>java</p>
         </li>
         <li>
-            <img src="./images/time.jpeg" alt="java"/>
+            <img src="./images/time.jpeg" alt="time"/>
             <p>time</p>
         </li>
         <li>
-            <img src="./images/snow.jpg" alt="java"/>
+            <img src="./images/snow.jpg" alt="snow"/>
             <p>snow</p>
         </li>
         <li>
-            <img src="./images/grass.jpg" alt="java"/>
+            <img src="./images/grass.jpg" alt="grass"/>
             <p>grass</p>
         </li>
     </ul>
@@ -73,23 +73,20 @@
 
 <script>
 
-
-
 var handlers = {
-    index: 3,              // 显示元素的索引
+    index: 2,              // 显示元素的索引
     slider: document.getElementById('slider'),
     icons: document.getElementById('icons'),
     icon: this.icons.getElementsByTagName('span'),
     show: function(){
-    	var idx = this.index % this.icon.length;
-
-    	this.icon[ idx ].className='red';
-    	this.slider.className='content f-anim';
-    	this.slider.style.left=(-idx*600)+"px";
+        this.icon[ this.index ].className='red';
+        this.slider.className='content f-anim';
+        this.slider.style.left=(-this.index*600)+"px";
+        console.log(this.slider.style.left)
     },
     // 三个触屏事件都使用该事件处理函数
     handleEvent: function(event){
-    	console.log(event.type);
+        console.log(event.type);
         if(event.type == 'touchstart'){     // 触摸开始
             this.start(event);
         }else if(event.type=='touchmove'){ // 触屏移动
@@ -131,14 +128,20 @@ var handlers = {
         if(isScrolling===0){  // 横向滑动
             // 滑动时间大于10ms才处理滑动事件
             if(Number(duration)>10){
-            	this.icon[this.index].className='';  // 取消原来索引的红色数字
+                this.icon[this.index].className='';  // 取消原来索引的红色数字
 
-            	// 索引指向下一张图片
+                // 索引指向下一张图片
                 // 判断是左移还是右移，并偏移量大于10时执行
-                if(endPos.x>10)
-                    if(this.index !== 0) this.index -= 1;
-                if(endPos.x<-10)
-                    if(this.index!==this.icon.length-1) this.index += 1;
+                if(endPos.x>10){
+                    if(this.index !== 0)
+                        this.index -= 1;
+                    this.index = this.index < 0 ? this.icon.length-1 : this.index;
+                }
+                if(endPos.x<-10){
+                    if(this.index!==this.icon.length-1)
+                        this.index += 1;
+                    this.index = this.index % this.icon.length;
+                }              
 
                 this.show();
             }
@@ -150,19 +153,12 @@ var handlers = {
 }
 
 if( ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch){
-	  // 系统自动那个调用handlers的handleEvent属性作为事件监听函数
-	  var slider = document.getElementById('slider');
-      slider.addEventListener('touchstart',handlers,false);
-      handlers.show();
+    // 系统自动那个调用handlers的handleEvent属性作为事件监听函数
+    console.log("cccc")
+    var slider = document.getElementById('slider');
+    slider.addEventListener('touchstart',handlers,false);
+    handlers.show();
 }
-
-setTimeout(function(){
-	console.log('setInterval');
-	var event = new Event('touchstart');
-	event.targetTouches=[{pageX:0,pageY:16}]
-	var slider = document.getElementById('slider');
-	slider.dispatchEvent(event);
-},2000);
 
 
 </script>
