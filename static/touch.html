@@ -88,7 +88,7 @@ var handlers = {
     	this.slider.style.left=(-idx*600)+"px";
     },
     // 三个触屏事件都使用该事件处理函数
-    handlerEvent: function(event){
+    handleEvent: function(event){
     	console.log(event.type);
         if(event.type = 'touchstart'){     // 触摸开始
             this.start(event);
@@ -150,12 +150,18 @@ var handlers = {
 }
 
 if( ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch){
-	  console.log("ddd")
 	  // 系统自动那个调用handlers的handlerEvent属性作为事件监听函数
 	  var slider = document.getElementById('slider');
       slider.addEventListener('touchstart',handlers,false);
       handlers.show();
 }
+
+setTimeout(function(){
+	console.log('setInterval');
+	var event = new Event('touchstart');
+	var slider = document.getElementById('slider');
+	slider.dispatchEvent(event);
+},2000);
 
 
 </script>
