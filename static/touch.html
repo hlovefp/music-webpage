@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no"/>
-	<title>移动端触屏移动</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no"/>
+    <title>移动端触屏移动</title>
 <style type="text/css">
 * {
-	margin:0;
-	padding:0;
+    margin:0;
+    padding:0;
 }
 /* 定义滑动元素外层容器的 CSS 样式 */
 .slider-container{
-	width: 600px;
-	margin: 50px 20px;
-	overflow: hidden;
+    width: 600px;
+    margin: 50px 20px;
+    overflow: hidden;
 }
 .slider-container .content{
-	position: relative;
-	left:0;
-	width:3000px;
+    position: relative;
+    left:0;
+    width:3000px;
 }
 .slider-container .content li{
-	list-style:none;
-	float:left;
-	width:600px;
+    list-style:none;
+    float:left;
+    width:600px;
 }
 /* 被滑动图片的样式 */
 .slider-container .content img{
-	display:block;
-	width:100%;
-	height:480px;
+    display:block;
+    width:100%;
+    height:480px;
 }
 .slider-container .content p { margin:20px 0; text-align:center; }
 .slider-container .icons{text-align: center;color: #000;}
@@ -37,111 +37,111 @@
 .slider-container .icons .red{color: red;}
 /* 图片切换定义动画 */
 .f-anim{
-	transition:left 0.3s linear;
-	-webkit-transition:left 0.3s linear;
+    transition:left 0.3s linear;
+    -webkit-transition:left 0.3s linear;
 }
 </style>
 </head>
 <body>
 
 <div class="slider-container">
-	<ul class="content" id="slider">
-		<li>
-			<img src="./offline/123.jpg" alt="java"/>
-			<p>java</p>
-		</li>
-		<li>
-			<img src="./images/time.jpeg" alt="java"/>
-			<p>time</p>
-		</li>
-		<li>
-			<img src="./images/snow.jpg" alt="java"/>
-			<p>snow</p>
-		</li>
-		<li>
-			<img src="./images/grass.jpg" alt="java"/>
-			<p>grass</p>
-		</li>
-	</ul>
-	<div class="icons" id="icons">
-		<span class="red">1</span>
-		<span>2</span>
-		<span>3</span>
-		<span>4</span>
-		<span>5</span>
-	</div>
+    <ul class="content" id="slider">
+        <li>
+            <img src="./offline/123.jpg" alt="java"/>
+            <p>java</p>
+        </li>
+        <li>
+            <img src="./images/time.jpeg" alt="java"/>
+            <p>time</p>
+        </li>
+        <li>
+            <img src="./images/snow.jpg" alt="java"/>
+            <p>snow</p>
+        </li>
+        <li>
+            <img src="./images/grass.jpg" alt="java"/>
+            <p>grass</p>
+        </li>
+    </ul>
+    <div class="icons" id="icons">
+        <span class="red">1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
 </div>
 
 <script>
 
 var handlers = {
-	index: 0,              // 显示元素的索引
-	slider: document.querySelector('#slider'),
-	icons: document.getElementById('icons'),
-	icon: this.icons.getElementsByTagName('span'),
-	// 三个触屏事件都使用该事件处理函数
-	handlerEvent: function(event){
-		if(event.type = 'touchstart'){ // 触摸开始
-			this.start(event);
-		}else if(event.type=='touchmove'){ // 触屏移动
-			this.move(event);
-		}else if(event.type=='touchend'){
-			this.end(event);
-		}
-	},
-	start: function(event){
-		// touches数组对象获得屏幕上所有的touch,取第一个touch
-		var touch = event.targetTouches[0];
-		// 页面坐标
-		startPos = { 
-			x: touch.pageX,
-			y: touch.pageY,
-			time: +new Date()
-		};
-		isScrolling = 0;  // 1垂直滚动 0水平滚动
-		this.slider.addEventListener('touchmove',this,false);
-		this.slider.addEventListener('touchend',this,false);
-	},
-	move: function(event){
-		// 当屏幕有多个touch或页面被缩放过，不执行move操作
-		if(event.targetTouches.length>1
-			|| event.scale && event.scale !== 1) return;
-		var touch = event.targetTouches[0];
-		endPos = {
-			x: touch.pageX-startPos.x,
-			y: touch.pageY-startPos.y
-		}
-		isScrolling = Math.abs(endPos.x) < Math.abs(endPos.y)?1:0;
-		if(isScrolling === 0){
-			event.preventDefault();
-			this.slider.style.left=(-this.index*600+endPos.x)+"px";
-		}
-	},
-	end:function(event){
-		var duration = +new Date() - startPos.time; // 滑动持续时间
-		if(isScrolling===0){  // 横向滑动
-			// 取消索引的红色数字
-			this.icon[this.index].className='';
-			// 滑动时间大于10ms才处理滑动事件
-			if(Number(duration)>10){
-				// 判断是左移还是右移，并偏移量大于10时执行
-				if(endPos.x>10)
-					if(this.index !== 0) this.index -= 1;
-				if(endPos.x<-10)
-					if(this.index!==this.icon.length-1) this.index += 1;
-			}
-			this.icon[this.index].className='red';
-			this.slider.className='content f-anim';
-			this.slider.style.left=(-this.index*600)+"px";
-		}
-		this.slider.removeEventListener('touchmove',this,false);
-		this.slider.remvoeEventListener('touchend',this.false);
-	}
+    index: 0,              // 显示元素的索引
+    slider: document.querySelector('#slider'),
+    icons: document.getElementById('icons'),
+    icon: this.icons.getElementsByTagName('span'),
+    // 三个触屏事件都使用该事件处理函数
+    handlerEvent: function(event){
+        if(event.type = 'touchstart'){ // 触摸开始
+            this.start(event);
+        }else if(event.type=='touchmove'){ // 触屏移动
+            this.move(event);
+        }else if(event.type=='touchend'){
+            this.end(event);
+        }
+    },
+    start: function(event){
+        // touches数组对象获得屏幕上所有的touch,取第一个touch
+        var touch = event.targetTouches[0];
+        // 页面坐标
+        startPos = { 
+            x: touch.pageX,
+            y: touch.pageY,
+            time: +new Date()
+        };
+        isScrolling = 0;  // 1垂直滚动 0水平滚动
+        this.slider.addEventListener('touchmove',this,false);
+        this.slider.addEventListener('touchend',this,false);
+    },
+    move: function(event){
+        // 当屏幕有多个touch或页面被缩放过，不执行move操作
+        if(event.targetTouches.length>1
+            || event.scale && event.scale !== 1) return;
+        var touch = event.targetTouches[0];
+        endPos = {
+            x: touch.pageX-startPos.x,
+            y: touch.pageY-startPos.y
+        }
+        isScrolling = Math.abs(endPos.x) < Math.abs(endPos.y)?1:0;
+        if(isScrolling === 0){
+            event.preventDefault();
+            this.slider.style.left=(-this.index*600+endPos.x)+"px";
+        }
+    },
+    end:function(event){
+        var duration = +new Date() - startPos.time; // 滑动持续时间
+        if(isScrolling===0){  // 横向滑动
+            // 取消索引的红色数字
+            this.icon[this.index].className='';
+            // 滑动时间大于10ms才处理滑动事件
+            if(Number(duration)>10){
+                // 判断是左移还是右移，并偏移量大于10时执行
+                if(endPos.x>10)
+                    if(this.index !== 0) this.index -= 1;
+                if(endPos.x<-10)
+                    if(this.index!==this.icon.length-1) this.index += 1;
+            }
+            this.icon[this.index].className='red';
+            this.slider.className='content f-anim';
+            this.slider.style.left=(-this.index*600)+"px";
+        }
+        this.slider.removeEventListener('touchmove',this,false);
+        this.slider.remvoeEventListener('touchend',this.false);
+    }
 }
 if( ('ontouchstart' in window) ||
-		window.DocumentTouch && document instanceof DocumentTouch){
-	document.querySelector('#slider')
-		.addEventListener('touchstart',handlers,false);
+        window.DocumentTouch && document instanceof DocumentTouch){
+    document.querySelector('#slider')
+        .addEventListener('touchstart',handlers,false);
 }
 
 </script>
