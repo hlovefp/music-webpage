@@ -74,14 +74,20 @@
 
 <script>
 
+if( ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch){
+	  console.log("aaa");
+	  // 系统自动那个调用handlers的handlerEvent属性作为事件监听函数
+      document.getElementById('slider').addEventListener('touchstart',handlers,false);
+}
+
 var handlers = {
     index: 0,              // 显示元素的索引
-    slider: document.querySelector('#slider'),
+    slider: document.getElementById('slider'),
     icons: document.getElementById('icons'),
     icon: this.icons.getElementsByTagName('span'),
     // 三个触屏事件都使用该事件处理函数
     handlerEvent: function(event){
-        if(event.type = 'touchstart'){ // 触摸开始
+        if(event.type = 'touchstart'){     // 触摸开始
             this.start(event);
         }else if(event.type=='touchmove'){ // 触屏移动
             this.move(event);
@@ -138,11 +144,7 @@ var handlers = {
         this.slider.remvoeEventListener('touchend',this.false);
     }
 }
-if( ('ontouchstart' in window) ||
-        window.DocumentTouch && document instanceof DocumentTouch){
-    document.querySelector('#slider')
-        .addEventListener('touchstart',handlers,false);
-}
+
 
 </script>
 
