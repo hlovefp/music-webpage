@@ -90,7 +90,7 @@ var handlers = {
     // 三个触屏事件都使用该事件处理函数
     handleEvent: function(event){
     	console.log(event.type);
-        if(event.type = 'touchstart'){     // 触摸开始
+        if(event.type == 'touchstart'){     // 触摸开始
             this.start(event);
         }else if(event.type=='touchmove'){ // 触屏移动
             this.move(event);
@@ -150,7 +150,7 @@ var handlers = {
 }
 
 if( ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch){
-	  // 系统自动那个调用handlers的handlerEvent属性作为事件监听函数
+	  // 系统自动那个调用handlers的handleEvent属性作为事件监听函数
 	  var slider = document.getElementById('slider');
       slider.addEventListener('touchstart',handlers,false);
       handlers.show();
@@ -159,6 +159,7 @@ if( ('ontouchstart' in window) || window.DocumentTouch && document instanceof Do
 setTimeout(function(){
 	console.log('setInterval');
 	var event = new Event('touchstart');
+	event.targetTouches=[{pageX:0,pageY:16}]
 	var slider = document.getElementById('slider');
 	slider.dispatchEvent(event);
 },2000);
