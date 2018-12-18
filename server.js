@@ -14,7 +14,11 @@ var server = http.createServer(function(request, response){
             response.end('<h1>404 Not Found</h1>')
         }else{
             console.log(filePath+'  ok')
-            response.writeHead(200, {'Content-Type':'text/html'});
+            if( filePath.match(/\.css$/)){
+                response.writeHead(200, {'Content-Type':'text/css'});
+            }else{
+                response.writeHead(200, {'Content-Type':'text/html'});
+            }
             response.write(fileContent, 'binary')
             response.end()
         }
