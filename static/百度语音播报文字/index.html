@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title> 百度语音测试 </title>
+	</head>
+	<body>
+		<div>
+			<input type="text" id="ttsText">
+			<input type="button" id="tts_btn" onclick="doTTS()" value="播放">
+		</div>
+		<div>
+			<audio id="tts_autio_id"></audio>
+		</div>
+
+		<script> 
+		function doTTS(){
+			var ttsAudio  = document.getElementById('tts_autio_id');
+			var ttsText   = document.getElementById('ttsText').value;
+
+            ttsAudio.src="http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=6&text="+ttsText;
+			ttsAudio.play();
+		}
+		</script>
+
+	</body>
+</html>
