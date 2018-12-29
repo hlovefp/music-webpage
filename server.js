@@ -21,7 +21,7 @@ var server = http.createServer(function(request, response){
                 var filename = pathname.match(/.+\/(.+)$/)[1];
                 response.writeHead(200, {
                     'Content-Type':'multipart/form-data',
-                    'Content-Disposition':'attachment;fileName='+filename
+                    'Content-Disposition':'attachment;fileName='+encodeURI(filename)
                 });
             }else if( pathname.match(/\.css$/)){
                 response.writeHead(200, {'Content-Type':'text/css'});
