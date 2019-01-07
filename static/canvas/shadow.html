@@ -1,0 +1,58 @@
+﻿<html>
+<head>
+  <title> 阴影 </title>
+</head>
+<body>
+
+<style>
+    table {
+        table-layout:fixed;
+        border-collapse:collapse;
+        border:1px solid black;
+    }
+    td {
+        background-color:#ccc;
+        border:1px solid black;
+    }
+</style>
+
+<p> 表格的宽度由将两个col元素计算出来 </p>
+<table>
+    <col style="width:240px;"/>
+    <col style="width:80px;"/>
+    <tr>
+        <td> 疯狂Java讲义 </td>
+        <td> 轻量级 Java EE 企业应用实战 </td>
+    </tr>
+    <tr>
+        <td> Android讲义 </td>
+        <td> 轻量级 Java EE 企业应用实战 </td>
+    </tr>
+</table>
+
+<p> 表格的宽度由第一行的单元格宽度计算出来 </p>
+<table>
+    <tr>
+        <td style="width:80px;"> 疯狂Java讲义 </td>
+        <td style="width:300px;"> 轻量级 Java EE 企业应用实战 </td>
+    </tr>
+    <tr>
+        <td> Android讲义 </td>
+        <td> 轻量级 Java EE 企业应用实战 </td>
+    </tr>
+</table>
+
+<p> 每列平均分配表格的宽度 </p>
+<table style="width:300px;">
+    <tr>
+        <td> 疯狂Java讲义 </td>
+        <td> 轻量级 Java EE 企业应用实战 </td>
+    </tr>
+    <tr>
+        <td> Android讲义 </td>
+        <td> 轻量级 Java EE 企业应用实战 </td>
+    </tr>
+</table>
+
+</body>
+</html>
