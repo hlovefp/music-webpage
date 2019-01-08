@@ -1,14 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-  <!--  ����canvas������Ϸ����, Local Storage��¼��Ϸ״̬ -->
-  <title> ������˹���� </title>
+  <!--  采用canvas绘制游戏界面, Local Storage记录游戏状态 -->
+  <title> 疯狂俄罗斯方块 </title>
   <script src="tetris.js"></script>
   <style>
-    @font-face{  /* ʹ�÷��������� */
+    /* 使用服务器字体
+    @font-face{  
       font-family:tmb;
       src:url("DS-DIGIB.TTF") format("TrueType");
-    }
+    } */
     body>div{
       font-size:13pt;
       padding-bottom:8px;
@@ -22,14 +23,14 @@
 </head>
 <body>
 
-  <h2> ������˹���� </h2>
+  <h2> 疯狂俄罗斯方块 </h2>
   <div style="width:336px;border:1px solid black;background:#ff9;">&nbsp;
     <div style="float:left;">
-      �ٶȣ�<span id="curSpeedEle"></span>
-      ��ǰ���֣�<span id="curScoreEle"></span>
+      速度：<span id="curSpeedEle"></span>
+      当前积分：<span id="curScoreEle"></span>
     </div>
     <div style="float:right;">
-      ��߻��֣�<span id="maxScoreEle"></span>
+      最高积分：<span id="maxScoreEle"></span>
     </div>
   </div>
 
