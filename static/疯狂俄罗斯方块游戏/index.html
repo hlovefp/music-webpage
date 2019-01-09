@@ -21,28 +21,30 @@
       color:green;
     }
     button{
-      font-size:40px;
+      height:50px;
+      width: 80px;
     }
   </style>
 </head>
-<body>
+<body style="text-align:center;">
 
   <h2> 疯狂俄罗斯方块 </h2>
-  <div style="width:336px;border:1px solid black;background:#ff9;">&nbsp;
+  <div style="width:336px;border:1px solid black;background:#ff9;margin:10px auto;">
+  	&nbsp;
     <div style="float:left;">
-      速度：<span id="curSpeedEle"></span>
-      当前积分：<span id="curScoreEle"></span>
+	      速度：<span id="curSpeedEle"></span>
+	      当前积分：<span id="curScoreEle"></span>
     </div>
     <div style="float:right;">
-      最高积分：<span id="maxScoreEle"></span>
+	      最高积分：<span id="maxScoreEle"></span>
     </div>
   </div>
   <div id="canvas"></div>
   <div>
-    <button onclick="rotate();">变形</button>
-    <button onclick="moveDown();">↓</button>
-    <button onclick="moveLeft();">←</button>
-    <button onclick="moveRight();">→</button>
+    <button onclick="rotate();">变形(↑)</button>
+    <button onclick="moveDown();">&nbsp;↓&nbsp;</button>
+    <button onclick="moveLeft();">&nbsp;←&nbsp;</button>
+    <button onclick="moveRight();">&nbsp;→&nbsp;</button>
   </div>
 
 </body>
