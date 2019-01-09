@@ -212,18 +212,20 @@ var moveDown = function(){
 				localStorage.removeItem("curScore");
 				localStorage.removeItem("tetris_status");
 				localStorage.removeItem("curSpeed");
-				if(confirm("您已经输了！是否参加排名？")){
+				if(confirm("您已经输了！是否再来一局？")){
 					// 读取Local Storage的maxScore记录,记录最高分
 					var maxScore = localStorage.getItem("maxScore");
 					maxScore = (maxScore==null)?0:maxScore;
 					if(curScore>=maxScore){
 						localStorage.setItem("maxScore",curScore);
 					}
+					initBlock();
+				}else{
+					// 游戏结束
+					isPlaying=false;
+					// 清除计时器
+					clearInterval(curTimer);
 				}
-				// 游戏结束
-				isPlaying=false;
-				// 清除计时器
-				clearInterval(curTimer);
 				return;
 			}
 			//保存
