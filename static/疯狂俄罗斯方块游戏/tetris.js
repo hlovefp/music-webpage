@@ -32,9 +32,6 @@ var createCanvas = function(rows, cols, cellWidth, cellHeight){
   return tetris_canvas
 }
 
-
-
-
 /* 初始化游戏状态数据,创建二位数组 */
 var tetris_status = [];
 for(var i=0; i<TETRIS_ROWS; i++){
@@ -293,54 +290,53 @@ var moveRight = function(){
 
 /*
 方块逆时针旋转90度
-p1(x,y)相对于p0(x0,y0)逆时针旋转90度到P2(x0+y-y0,y0+x0-x)
+p1(x,y)相对于p0(x0,y0)逆时针旋转90度到P2(x0-y0+y,x0+y0-x)
  */
 var rotate=function(){
   var canRotate=true;
 
   for(var i=0;i<currentFall.length;i++){
-    var preX = currentFall[i].x;
-    var preY = currentFall[i].y;
     // 始终以第三个方块作为旋转中心，即i为2的方块
     if(i!=2){
       // 计算旋转后的方块坐标
-      var p = currentFall[2];
-      var afterRotateX = p.x+preY-p.y;
-      var afterRotateY = p.y+p.x-preX;
+      var afterRotateX = currentFall[2].x-currentFall[2].y+currentFall[i].y;
+      var afterRotateY = currentFall[2].x+currentFall[2].y-currentFall[i].x;
+      
       // 旋转后所在位置已有方块不能旋转
       if( tetris_status[afterRotateY][afterRotateX+1] != NO_BLOCK ){
+    	console.log('rotate false')
         canRotate=false;
         break;
       }
+
       // 旋转后的坐标超出最左边边界
       if( afterRotateX<0 || tetris_status[afterRotateY-1][afterRotateX] != NO_BLOCK){
+    	console.log('move right')
         moveRight();
-        p = currentFall[2];
-        afterRotateX = p.x+preY-p.y;
-        afterRotateY = p.y+p.x-preX;
         break;
       }
+
       // 旋转后的坐标超出最右边边界
       if( afterRotateX>=TETRIS_COLS-1 || tetris_status[afterRotateY][afterRotateX+1] != NO_BLOCK){
+    	  console.log('move left')
         moveLeft();
-        p = currentFall[2];
-        afterRotateX = p.x+preY-p.y;
-        afterRotateY = p.y+p.x-preX;
         break;
       }
     }
   }
+
   if(canRotate){
     // 针旋前背景涂成白色
     for(var i=0; i<currentFall.length;i++){
       fillRectWhite(currentFall[i]);
     }
     // 针旋方格,始终以第三个方块作为旋转中心，即i为2的方块
-    var p = currentFall[2];
     for(var i=0;i<currentFall.length;i++){
       if(i!=2){
-        currentFall[i].x = p.x+currentFall[i].x-p.y;
-        currentFall[i].y = p.y+p.x-currentFall[i].y;
+        var afterRotateX = currentFall[2].x-currentFall[2].y+currentFall[i].y;
+        var afterRotateY = currentFall[2].x+currentFall[2].y-currentFall[i].x;
+        currentFall[i].x = afterRotateX;
+        currentFall[i].y = afterRotateY;
       }
     }
     // 填充颜色
