@@ -175,6 +175,10 @@ var fillRectColor = function(cur){
 /* 控制方块自然向下掉 */
 var moveDown = function(){
 	var canDown = true;   // 定义能否掉落的旗标
+
+	if(!isPlaying)  return;
+
+	
 	// 遍历每个方块，判断是否能向下掉落
 	for(var i=0; i<currentFall.length;i++){
 		// 判断是否已经到底，或者下一格是否有方块
@@ -237,6 +241,9 @@ var moveDown = function(){
 /* 左移方块 */
 var moveLeft = function(){
   var canLeft=true;
+
+  if(!isPlaying)  return;
+  
   for(var i=0; i<currentFall.length;i++){
     // 判断是否在最左边,或者左边已有方块
     if( currentFall[i].x <= 0 ||
@@ -264,6 +271,9 @@ var moveLeft = function(){
 /* 右移方块 */
 var moveRight = function(){
   var canRight=true;
+
+  if(!isPlaying)  return;
+
   for(var i=0; i<currentFall.length;i++){
     // 判断是否在最右边,或者右边已有方块
     if( currentFall[i].x >= TETRIS_COLS-1 ||
@@ -294,7 +304,9 @@ p1(x,y)相对于p0(x0,y0)逆时针旋转90度到P2(x0-y0+y,x0+y0-x)
  */
 var rotate=function(){
   var canRotate=true;
-
+  
+  if(!isPlaying)  return;
+  
   for(var i=0;i<currentFall.length;i++){
     // 始终以第三个方块作为旋转中心，即i为2的方块
     if(i!=2){
@@ -350,19 +362,15 @@ var rotate=function(){
 window.onkeydown=function(evt){
   switch(evt.keyCode){
     case 40:  // 向下箭头
-      if(!isPlaying)  return;
       moveDown();
       break;
     case 37:  // 向左箭头
-      if(!isPlaying)  return;
       moveLeft();
       break;
     case 39: // 向右箭头
-      if(!isPlaying)  return;
       moveRight();
       break;
     case 38: // 向上箭头,旋转方块
-      if(!isPlaying)  return;
       rotate();
       break;
   }
@@ -370,7 +378,8 @@ window.onkeydown=function(evt){
 
 window.onload=function(){
   var tetris_canvas = createCanvas(TETRIS_ROWS,TETRIS_COLS,CELL_SIZE,CELL_SIZE);
-  document.body.appendChild(tetris_canvas);
+  //document.body.appendChild(tetris_canvas);
+  document.getElementById("canvas").appendChild(tetris_canvas);
   curScoreEle = document.getElementById("curScoreEle");
   curSpeedEle = document.getElementById("curSpeedEle");
   maxScoreEle = document.getElementById("maxScoreEle");
