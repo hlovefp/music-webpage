@@ -42,44 +42,48 @@ var video  = document.getElementById("video");
 var canvas = document.getElementById("canvas");
 var result = document.getElementById("result");
 var judeQrcodeInternal = null;
+
 //访问用户媒体设备的兼容方法
 function getUserMedia(constrains, success, error){
+    var msg=null;
     if(navigator.mediaDevices.getUserMedia){  //最新标准API
+        msg = "navigator.mediaDevices.getUserMedia";
         navigator.mediaDevices.getUserMedia(constrains).then(success).catch(error);
     } else if (navigator.webkitGetUserMedia){ //webkit内核浏览器
+        msg = "navigator.webkitGetUserMedia";
         navigator.webkitGetUserMedia(constrains).then(success).catch(error);
     } else if (navigator.mozGetUserMedia){    //Firefox浏览器
+        msg = "navigator.mozGetUserMedia";
         navagator.mozGetUserMedia(constrains).then(success).catch(error);
     } else if (navigator.getUserMedia){       //旧版API
+        msg = "navigator.getUserMedia";
         navigator.getUserMedia(constrains).then(success).catch(error);
+    }else{
+        msg = "null";
     }
+    alert("getUserMedia: "+msg);
 }
 
-if (navigator.mediaDevices.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.getUserMedia ){
-    //调用用户媒体设备，访问摄像头
-    getUserMedia({
-        video: {
-            width: { min: 1024, ideal: 1280, max: 1920 },
-            height: { min: 776, ideal: 720, max: 1080 }
-        }
-    },function(stream){
-        var vendorUrl = window.URL || window.webkitURL; // 兼容webkit内核浏览器
-        video.src = vendorUrl.createObjectURL(stream);  // video关联到摄像头
-        video.play();                                   // 播放视频
-        judeQrcodeInternal = setInterval(judgeQrcode,500);  //启动定时器
-        document.getElementById("capture").addEventListener("click",function(){
-            clearInterval(judeQrcodeInternal);
-            setInterval(judgeQrcode,500);
-        });
-    }, function(error) {
-        alert("error: ",error.name,error.message);
+//调用用户媒体设备，访问摄像头
+getUserMedia({
+    video: {
+        width: { min: 1024, ideal: 1280, max: 1920 },
+        height: { min: 776, ideal: 720,  max: 1080 }
+    }
+},function(stream){
+    var vendorUrl = window.URL || window.webkitURL; // 兼容webkit内核浏览器
+    video.src = vendorUrl.createObjectURL(stream);  // video关联到摄像头
+    video.play();                                   // 播放视频
+    judeQrcodeInternal = setInterval(judgeQrcode,500);  //启动定时器
+    document.getElementById("capture").addEventListener("click",function(){
+        clearInterval(judeQrcodeInternal);
+        setInterval(judgeQrcode,500);
     });
-} else {
-    alert("not support");
-}
+}, function(error) {
+    // NotSupportedError   Only secure origins are allowed  ==> http访问变成https
+    alert("error: "+error.name+" "+error.message);
+});
+
 
 function judgeQrcode(){
     // 从viedo中截取图像截取图像放入到canvas
