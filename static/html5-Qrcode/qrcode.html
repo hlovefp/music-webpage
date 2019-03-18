@@ -1,0 +1,104 @@
+
+<html lang="ZH-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Web QrCode Test</title>
+<script type="text/javascript" src="src/grid.js"></script>
+<script type="text/javascript" src="src/version.js"></script>
+<script type="text/javascript" src="src/detector.js"></script>
+<script type="text/javascript" src="src/formatinf.js"></script>
+<script type="text/javascript" src="src/errorlevel.js"></script>
+<script type="text/javascript" src="src/bitmat.js"></script>
+<script type="text/javascript" src="src/datablock.js"></script>
+<script type="text/javascript" src="src/bmparser.js"></script>
+<script type="text/javascript" src="src/datamask.js"></script>
+<script type="text/javascript" src="src/rsdecoder.js"></script>
+<script type="text/javascript" src="src/gf256poly.js"></script>
+<script type="text/javascript" src="src/gf256.js"></script>
+<script type="text/javascript" src="src/decoder.js"></script>
+<script type="text/javascript" src="src/qrcode.js"></script>
+<script type="text/javascript" src="src/findpat.js"></script>
+<script type="text/javascript" src="src/alignpat.js"></script>
+<script type="text/javascript" src="src/databr.js"></script>
+</head>
+<body>
+<!--
+微信和支付宝浏览器不支持
+使用 JS调用手机摄像头然后用画布把当前摄像头的数据转成Base64的png图片，
+经过QrCode直接再本地识别。
+-->
+  <div class="booth">
+    <video id="video" autoplay style="width: 320px;height: 320px"></video>
+  </div>
+  <div><button id="capture">重新识别</button></div>          <!--拍照按钮-->
+  <div id="result"></div>
+  <div style="display:none;"><canvas id="canvas" width="320" height="320"></canvas></div> <!--描绘video截图-->
+<script>
+    
+    
+    //初始化媒体对象
+var c=0;
+var video  = document.getElementById("video");
+var canvas = document.getElementById("canvas");
+var result = document.getElementById("result");
+var judeQrcodeInternal = null;
+//访问用户媒体设备的兼容方法
+function getUserMedia(constrains, success, error){
+    if(navigator.mediaDevices.getUserMedia){  //最新标准API
+        navigator.mediaDevices.getUserMedia(constrains).then(success).catch(error);
+    } else if (navigator.webkitGetUserMedia){ //webkit内核浏览器
+        navigator.webkitGetUserMedia(constrains).then(success).catch(error);
+    } else if (navigator.mozGetUserMedia){    //Firefox浏览器
+        navagator.mozGetUserMedia(constrains).then(success).catch(error);
+    } else if (navigator.getUserMedia){       //旧版API
+        navigator.getUserMedia(constrains).then(success).catch(error);
+    }
+}
+
+if (navigator.mediaDevices.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.getUserMedia ){
+    //调用用户媒体设备，访问摄像头
+    getUserMedia({
+        video: {
+            width: { min: 1024, ideal: 1280, max: 1920 },
+            height: { min: 776, ideal: 720, max: 1080 }
+        }
+    },function(stream){
+        var vendorUrl = window.URL || window.webkitURL; // 兼容webkit内核浏览器
+        video.src = vendorUrl.createObjectURL(stream);  // video关联到摄像头
+        video.play();                                   // 播放视频
+        judeQrcodeInternal = setInterval(judgeQrcode,500);  //启动定时器
+        document.getElementById("capture").addEventListener("click",function(){
+            clearInterval(judeQrcodeInternal);
+            setInterval(judgeQrcode,500);
+        });
+    }, function(error) {
+        alert("error: ",error.name,error.message);
+    });
+} else {
+    alert("not support");
+}
+
+function judgeQrcode(){
+    // 从viedo中截取图像截取图像放入到canvas
+    var context = canvas.getContext("2d");
+    context.drawImage(video, 0, 0, 320, 320);
+    var imgData = canvas.toDataURL("image/png");
+    //识别二维码并回调方法
+	qrcode.callback = function(data){
+        document.getElementById("result").innerHTML=data;
+        if( data != "error decoding QR Code" ){
+            clearInterval(judeQrcodeInternal);
+            if(data.substr(0,4)=="http"){
+                //window.location.href=data;
+            }
+        } 
+    };
+	qrcode.decode(imgData); // 识别图片数据
+}
+
+  </script>
+</body>
+</html>

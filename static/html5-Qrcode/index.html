@@ -10,17 +10,12 @@
 
 <body>
     <div>
-        <div class="qr-btn" node-type="qr-btn">扫描二维码1
-            <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+        <div class="qr-btn" node-type="qr-btn">扫描二维码
+            <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码" />
         </div>
     </div>
-    <div>
-        <div class="qr-btn" node-type="qr-btn">扫描二维码2
-            <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码2" />
-        </div>
-    </div>
-    <div class="result-qrcode">
-    </div>
+    <div class="result-qrcode"></div>  <!-- 输出二维码结果 -->
+
     <script src="lib/zepto.js"></script>
     <script src="lib/qrcode.lib.min.js"></script>
     <script src="lib/qrcode.js"></script>
