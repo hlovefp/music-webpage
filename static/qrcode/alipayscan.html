@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>调用支付宝扫一扫功能测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+ 
+<body>
+<script src="https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.inc.min.js"></script>
+
+<button id="J_btn_scanQR" class="btn btn-default">扫一扫二维码</button>
+<button id="J_btn_scanBAR" class="btn btn-default">扫一扫条形码</button>
+<script>
+  var btnScanQR = document.querySelector('#J_btn_scanQR');
+  var btnScanBAR = document.querySelector('#J_btn_scanBAR');
+  btnScanQR.addEventListener('click', function(){
+    ap.scan(function(res){
+      ap.alert(JSON.stringify(res));
+    });
+  });
+  btnScanBAR.addEventListener('click', function(){
+    ap.scan({
+      type: 'bar'
+    }, function(res){
+      ap.alert(JSON.stringify(res));
+    });
+  });
+</script>
+</body>
+</html>

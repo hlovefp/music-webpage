@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">扫描结果展示</h1>
+		</header>
+		<div style="position: absolute;top: 50px;left: 0px;bottom: 0px;right: 0px;">
+			<div style="width: 100%;height: auto;margin-top: 50px;text-align: center;line-height: 50px;"  id="result"></div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				
+			});
+			
+			window.addEventListener('showResult',function(event){
+				var result=event.detail.result;
+				document.getElementById("result").innerHTML=result;
+			});
+		</script>
+	</body>
+
+</html>

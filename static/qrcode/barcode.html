@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div style="position: absolute;top: 0px;bottom: 0px;left: 0px;right: 0px;"  id="barcode">
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				mui.preload({
+					url:'barcodeSucceed.html',
+					id:'barcodeSucceed'
+				});
+				
+				
+				var bc = new plus.barcode.Barcode('barcode');
+				bc.setFlash(false);
+				bc.onmarked=function(type, result){//扫描成功
+					plus.webview.show('barcodeSucceed','pop-in',100);
+					mui.fire(plus.webview.getWebviewById('barcodeSucceed'),'showResult',{result:result});
+					
+					window.setTimeout(function(){
+						plus.webview.currentWebview().reload();
+					},1000);
+				}
+				bc.start();
+			});
+		</script>
+	</body>
+
+</html>
