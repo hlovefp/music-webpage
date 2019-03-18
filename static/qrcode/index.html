@@ -46,7 +46,12 @@
 			
 			
 			document.getElementById("start").addEventListener('tap',function(){
-				plus.webview.show('barcode','pop-in',100);
+                // plus是html5+的标准
+                if( window.plus ){
+				    plus.webview.show('barcode','pop-in',100);
+                }else{
+                    alert("plus is undefined");
+                }
 			});
 			
 		</script>
